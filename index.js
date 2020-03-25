@@ -3,19 +3,26 @@ const Discord = require('discord.js')
 
 const { prefix } = require('./config')
 require('dotenv').config()
-const token = process.env.TOKEN
+const token = `${process.env.TOKEN}`
 
 const client = new Discord.Client()
 client.commands = new Discord.Collection()
 
 const commandFiles = fs.readdirSync('./commands').filter(file => {
-    file.endsWith('.js')
+    return file.endsWith('.js')
 })
 
-for (const file of commandFiles) {
+// for (const file of commandFiles) {
+//     const command = require(`./commands/${file}`)
+//     client.commands.set(command.name, command)
+//
+//     console.log(command, 'command')
+// }
+
+commandFiles.forEach(file => {
     const command = require(`./commands/${file}`)
     client.commands.set(command.name, command)
-}
+})
 
 const cooldowns = new Discord.Collection()
 
@@ -32,6 +39,7 @@ client.on('message', message => {
     const command = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
+            console.log(client.commands)
             console.log(command)
 
     if (!command) return
