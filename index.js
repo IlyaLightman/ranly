@@ -1,7 +1,7 @@
 const fs = require('fs')
 const Discord = require('discord.js')
 
-const { prefix } = require('./config')
+const { prefix, hearts } = require('./config')
 require('dotenv').config()
 const token = process.env.TOKEN
 
@@ -23,8 +23,19 @@ client.once('ready', () => {
     console.log('Ranly готов к работе!')
 })
 
+client.on('shardError', error => {
+    console.error('A websocket connection encountered an error:', error);
+})
+
+process.on('unhandledRejection', error => {
+    console.error('Unhandled promise rejection:', error);
+})
+
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return
+    const heart = Math.floor(Math.random() * 6)
+    console.log(hearts[heart])
+    message.react(hearts[heart]).then(() => { })
 
     const args = message.content.slice(prefix.length).split(/ +/)
     const commandName = args.shift().toLowerCase()
