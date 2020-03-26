@@ -3,7 +3,7 @@ const Discord = require('discord.js')
 
 const { prefix } = require('./config')
 require('dotenv').config()
-const token = `${process.env.TOKEN}`
+const token = process.env.TOKEN
 
 const client = new Discord.Client()
 client.commands = new Discord.Collection()
@@ -11,13 +11,6 @@ client.commands = new Discord.Collection()
 const commandFiles = fs.readdirSync('./commands').filter(file => {
     return file.endsWith('.js')
 })
-
-// for (const file of commandFiles) {
-//     const command = require(`./commands/${file}`)
-//     client.commands.set(command.name, command)
-//
-//     console.log(command, 'command')
-// }
 
 commandFiles.forEach(file => {
     const command = require(`./commands/${file}`)
@@ -39,9 +32,6 @@ client.on('message', message => {
     const command = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName))
 
-            console.log(client.commands)
-            console.log(command)
-
     if (!command) return
 
     if (command.guildOnly && message.channel.type !== 'text') {
@@ -49,10 +39,18 @@ client.on('message', message => {
     }
 
     if (command.args && !args.length) {
-        let reply = `Это так не работает, ${message.author}!`
+        // let reply = `Это так не работает, ${message.author}!`
+        let reply = `Это так не работает`
 
         if (command.usage) {
             reply += `\nВызов должен быть таким: \`${prefix}${command.name} ${command.usage}\``
+            if (command.examples) {
+                reply += `\nНапример: \`${prefix}${command.name} ${command.examples[0]}\``
+                command.examples.shift()
+                command.examples.forEach(example => {
+                    reply += ` или \`${prefix}${command.name} ${example}\``
+                })
+            }
         }
 
         return message.channel.send(reply)
