@@ -11,10 +11,6 @@ client.commands = new Discord.Collection()
 const commandFiles = fs.readdirSync('./commands').filter(file => {
     return file.endsWith('.js')
 })
-const dndCommands = fs.readdirSync('./commands/dnds').filter(file => {
-    return file.endsWith('.js') && file !== 'Character.js'
-})
-console.log(dndCommands, commandFiles)
 
 commandFiles.forEach(file => {
     const command = require(`./commands/${file}`)

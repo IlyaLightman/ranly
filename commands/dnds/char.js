@@ -30,5 +30,7 @@ async function addSkills(args) {
 }
 
 module.exports = {
-    create
+    create,
+    addMagic,
+    addSkills
 }
