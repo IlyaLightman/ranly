@@ -1,7 +1,7 @@
 const fs = require('fs')
 const Discord = require('discord.js')
 
-const { prefix, hearts } = require('./config')
+const { prefix, hearts, groovy, groovyChannel } = require('./config')
 require('dotenv').config()
 const token = process.env.TOKEN
 
@@ -11,11 +11,17 @@ client.commands = new Discord.Collection()
 const commandFiles = fs.readdirSync('./commands').filter(file => {
     return file.endsWith('.js')
 })
+const dndCommands = fs.readdirSync('./commands/dnds').filter(file => {
+    return file.endsWith('.js') && file !== 'Character.js'
+})
+console.log(dndCommands, commandFiles)
 
 commandFiles.forEach(file => {
     const command = require(`./commands/${file}`)
     client.commands.set(command.name, command)
 })
+
+client.commands.forEach(command => console.log(command.name))
 
 const cooldowns = new Discord.Collection()
 
@@ -32,10 +38,17 @@ process.on('unhandledRejection', error => {
 })
 
 client.on('message', message => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return
+    if (!(message.content.startsWith(prefix) || message.content.startsWith(groovy)) || message.author.bot) return
+
     const heart = Math.floor(Math.random() * 6)
-    console.log(hearts[heart])
     message.react(hearts[heart]).then(() => { })
+
+    if (message.content.startsWith(groovy + ' ') && message.channel.name !== groovyChannel) {
+        message.channel.send(`${message.author}, НЕ СЮДА ОТПРАВЛЯЙ ЕСТЬ КАНАЛ СПЕЦИАЛЬНЫЙ. ЕЩЁ РАЗ И БАН`).then(
+            () => {}
+        )
+        return
+    }
 
     const args = message.content.slice(prefix.length).split(/ +/)
     const commandName = args.shift().toLowerCase()

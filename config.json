@@ -1,4 +1,6 @@
 {
   "prefix": "$",
+  "groovy": "-q",
+  "groovyChannel": "groovy-бот",
   "hearts": ["\uD83D\uDC9A", "\uD83D\uDC9B", "\uD83D\uDC99", "\uD83D\uDC9C", "❤", "\uD83E\uDDE1"]
 }
