@@ -5,27 +5,38 @@ const Character = require('./Character')
 async function create(
     name, maxHP, maxMP, lvl,
     strength, dexterity, intelligence, physique, wisdom, charm,
-    isMagic, race, lore
+    isMagic, race
 ) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const baseStats = {
             strength, dexterity, intelligence, physique, wisdom, charm
         }
 
+        isMagic === 'yes' ? isMagic = true : isMagic = false
+
         const charObj = new Character(
-            name, maxHP, maxMP, lvl, baseStats, []
+            name, maxHP, maxMP, lvl, baseStats, isMagic, race,[''], ['']
         )
 
-        charObj.save().then(() => resolve()).catch(err => reject(err))
+        await charObj.save().catch(err => reject(err)).then(() => resolve())
     })
-
 }
 
-async function addMagic(args) {
+async function addMagic(name, title, mp, school, level, about) {
+    return new Promise(async (resolve, reject) => {
+        const magic = { title, mp, school, level, about }
+        const character = await Character.getByName(name)
 
+        character.magic.push(magic)
+        console.log(character)
+
+        await Character.update(character)
+            .catch(err => reject(err))
+            .then(() => resolve())
+    })
 }
 
-async function addSkills(args) {
+async function addSkills(name, args) {
 
 }
 

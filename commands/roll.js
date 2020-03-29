@@ -20,7 +20,7 @@ module.exports = {
                 rand = `${Math.floor(Math.random() * dice)}`
                 let sum = +rand
                 for (let i = 1; i < count; i++) {
-                    const value = Math.floor(Math.random() * dice) + 1
+                    const value = Math.round(Math.random() * dice) + 1
                     rand += ` + ${value}`
                     sum += value
                 }
