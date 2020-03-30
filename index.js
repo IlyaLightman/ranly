@@ -17,7 +17,9 @@ commandFiles.forEach(file => {
     client.commands.set(command.name, command)
 })
 
-client.commands.forEach(command => console.log(command.name))
+let commands = ''
+client.commands.forEach(command => commands += `${command.name} `)
+console.log(commands)
 
 const cooldowns = new Discord.Collection()
 

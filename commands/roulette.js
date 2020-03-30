@@ -8,14 +8,17 @@ module.exports = {
     args: true,
     execute(message, args) {
         const chance = args[0]
-
         if (chance[-1] === '%') {
             chance.pop()
         }
 
         const final = Math.random() * 100
+        console.log(message.author.username, chance, final)
 
-        console.log(message.author.name, chance, final)
+        if (isNaN(+chance)) {
+            message.channel.send('Неверные параметры')
+            return
+        }
 
         if (final < chance) {
             message.channel.send(`${message.author}, на этот раз тебе повезло...`)
@@ -24,7 +27,7 @@ module.exports = {
             setTimeout(() => {
                 message.guild.member(message.author).ban({
                     days: 1,
-                    reason: 'Проиграл в рулетку. Лох. Недуачник'
+                    reason: 'Проиграл даже в рулетку. Лох. Недуачник'
                 })
             }, 3500)
         }
