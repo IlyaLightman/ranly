@@ -25,12 +25,12 @@ async function create(
 async function addMagic(name, title, mp, school, level, about) {
     return new Promise(async (resolve, reject) => {
         const magic = { title, mp, school, level, about }
-        const character = await Character.getByName(name)
 
-        character.magic.push(magic)
-        console.log(character)
+        // const character = await Character.getByName(name)
+        //
+        // character.magic.push(magic)
 
-        await Character.update(character)
+        await Character.update(name, magic, '/magic')
             .catch(err => reject(err))
             .then(() => resolve())
     })

@@ -23,12 +23,12 @@ class Character {
         await axios.post(`${dburl}dnd/characters.json`, character).catch(console.log)
     }
 
-    static async update(char) {
-        const id = await Character.keyByName(char.name)
-        const character = char
-        const url = `${dburl}/dnd/characters/${id}.json`
+    static async update(name, toAdd, pathAdd) {
+        const id = await Character.keyByName(name)
 
-        await axios.post(url, character)
+        const url = `${dburl}/dnd/characters/${id}${pathAdd}.json`
+
+        await axios.post(url, toAdd)
     }
 
     static async getAll(addPath = '') {
@@ -46,10 +46,15 @@ class Character {
 
     static async keyByName(name) {
         const data = await Character.getAll('/characters')
-        const character = Object.values(data).find(char => char.name === name)
 
-        console.log('KEY', character.key)
-        return character
+        let keyId = -1
+        Object.values(data).find(char => {
+            keyId++
+            return char.name === name
+        })
+        const charKey = Object.keys(data)[keyId]
+
+        return charKey
     }
 }
 
