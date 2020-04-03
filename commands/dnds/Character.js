@@ -23,12 +23,12 @@ class Character {
         await axios.post(`${dburl}dnd/characters.json`, character).catch(console.log)
     }
 
-    static async update(name, toAdd, pathAdd) {
+    static async update(name, toUpdate) {
         const id = await Character.keyByName(name)
 
-        const url = `${dburl}/dnd/characters/${id}${pathAdd}.json`
+        const url = `${dburl}/dnd/characters/${id}.json`
 
-        await axios.post(url, toAdd)
+        await axios.put(url, toUpdate)
     }
 
     static async getAll(addPath = '') {

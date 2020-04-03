@@ -20,7 +20,7 @@ module.exports = {
             return
         }
 
-        if (final < chance) {
+        if (final > chance) {
             message.channel.send(`${message.author}, на этот раз тебе повезло...`)
         } else {
             message.channel.send(`${message.author}, :)`)
