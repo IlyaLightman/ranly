@@ -1,9 +1,9 @@
 const Character = require('./dnds/Character')
 const fs = require('fs')
-const { create, addMagic, addSkills } = require('./dnds/char')
+const { create, addMagic, addSkills, setStat, setStats } = require('./dnds/char')
 
 const validActions = ['char', 'inv', 'coin']
-const validCommands = ['add', 'list', 'create', 'magic']
+const validCommands = ['add', 'list', 'create', 'magic', 'stat', 'stats']
 
 const errorMessage = 'Произошла ошибка во время создания, проверьте правильность введённых данных'
 
@@ -35,6 +35,16 @@ module.exports = {
                             .catch(() => message.channel.send(
                                 errorMessage))
                             .then(() => message.channel.send(`Новый скилл добалвен персонажу ${charArgs[0]}`))
+                    } else if (command === 'stat') {
+                        await setStat(...charArgs) // name, stat, value
+                            .catch(() => message.channel.send(
+                                errorMessage))
+                            .then(() => message.channel.send(`Обновлена характеристика персонажа ${charArgs[0]}`))
+                    } else if (command === 'stats') {
+                        await setStats(...charArgs) // name, шесть характеристик цифрами
+                            .catch(() => message.channel.send(
+                                errorMessage))
+                            .then(() => message.channel.send(`Обновлены характеристики персонажа ${charArgs[0]}`))
                     }
                 break
             case 'inv':

@@ -30,7 +30,7 @@ async function addMagic(name, title, mp, school, level, about) {
 
         character.magic.push(magic)
 
-        await Character.update(name, character)
+        await Character.characterUpdate(name, character)
             .catch(err => reject(err))
             .then(() => resolve())
     })
@@ -40,8 +40,40 @@ async function addSkills(name, args) {
 
 }
 
+async function setStat(name, stat, value) {
+    return new Promise(async (resolve, reject) => {
+        const character = await Character.getByName(name)
+        try {
+            character.stats[stat] = value
+            await Character.characterUpdate(name, character)
+                .catch(err => reject(err))
+                .then(() => resolve())
+        } catch (err) {
+            reject(err)
+        }
+    })
+}
+
+async function setStats(name, charm, dexterity, intelligence, physique, strength, wisdom) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const character = await Character.getByName(name)
+            const stats = {charm, dexterity, intelligence, physique, strength, wisdom}
+
+            character.stats = stats
+            await Character.characterUpdate(name, character)
+                .catch(err => reject(err))
+                .then(() => resolve())
+        } catch (err) {
+            reject(err)
+        }
+    })
+}
+
 module.exports = {
     create,
     addMagic,
-    addSkills
+    addSkills,
+    setStat,
+    setStats
 }
