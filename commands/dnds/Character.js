@@ -25,7 +25,6 @@ class Character {
 
     static async characterUpdate(name, character) {
         const id = await Character.keyByName(name)
-
         const url = `${dburl}/dnd/characters/${id}.json`
 
         await axios.put(url, character)
@@ -55,6 +54,12 @@ class Character {
         const charKey = Object.keys(data)[keyId]
 
         return charKey
+    }
+
+    static async delete(name) {
+        const id = this.getByName(name)
+
+        await axios.delete(`${dburl}/dnd/characters/${id}.json`)
     }
 }
 
