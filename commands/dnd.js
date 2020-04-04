@@ -5,7 +5,7 @@ const { create, addMagic, addSkill, setStat, setStats, setBase, deleteCharacter 
 const validActions = ['char', 'inv', 'coin']
 const validCommands = ['add', 'list', 'create', 'magic', 'stat', 'stats', 'skill', 'base', 'delete']
 
-const errorMessage = 'Произошла ошибка во время создания, проверьте правильность введённых данных'
+const errorMessage = 'Произошла ошибка, проверьте правильность введённых данных'
 
 module.exports = {
     name: 'dnd',

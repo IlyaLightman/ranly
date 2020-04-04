@@ -57,7 +57,7 @@ class Character {
     }
 
     static async delete(name) {
-        const id = this.getByName(name)
+        const id = await this.keyByName(name)
 
         await axios.delete(`${dburl}/dnd/characters/${id}.json`)
     }
