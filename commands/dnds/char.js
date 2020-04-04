@@ -1,13 +1,24 @@
 const Character = require('./Character')
 // Функции для комманды char (Персонаж)
 
-// &dnd char create Devitt 40 60 6 3 3 20 3 14 3 yes Human Местный Букер Девитт
+async function isCharacterExist(name) {
+    const names = await Character.charactersNames()
+    if (names.includes(name)) {
+        return true
+    } else return false
+}
+
+// $dnd char create Devitt 40 60 6 3 3 20 3 14 3 yes Human Местный Букер Девитт
 async function create(
     name, maxHP, maxMP, lvl,
     strength, dexterity, intelligence, physique, wisdom, charm,
     isMagic, race
 ) {
     return new Promise(async (resolve, reject) => {
+        if (await isCharacterExist(name)) {
+            reject('Такой персонаж уже существует')
+        }
+
         const baseStats = {
             strength, dexterity, intelligence, physique, wisdom, charm
         }
@@ -22,8 +33,14 @@ async function create(
     })
 }
 
-async function addMagic(name, title, mp, school, level, about) {
+async function addMagic(name, title, mp, school, level, ...about) {
     return new Promise(async (resolve, reject) => {
+        const isCharacter = await isCharacterExist(name)
+        if (!isCharacter) {
+            reject('Такого персонажа не существует')
+        }
+        console.log(isCharacter)
+
         const description = about.join(' ')
         const magic = { title, mp, school, level, description }
 
@@ -39,6 +56,10 @@ async function addMagic(name, title, mp, school, level, about) {
 
 async function addSkill(name, title, type, ...about) {
     return new Promise(async (resolve, reject) => {
+        if (!(await  isCharacterExist(name))) {
+            reject('Такого персонажа не существует')
+        }
+
         const description = about.join(' ')
         const skill = { title, type, description }
 
@@ -54,6 +75,10 @@ async function addSkill(name, title, type, ...about) {
 
 async function setStat(name, stat, value) {
     return new Promise(async (resolve, reject) => {
+        if (!(await  isCharacterExist(name))) {
+            reject('Такого персонажа не существует')
+        }
+
         const character = await Character.getByName(name)
         try {
             character.stats[stat] = value
@@ -68,6 +93,10 @@ async function setStat(name, stat, value) {
 
 async function setStats(name, charm, dexterity, intelligence, physique, strength, wisdom) {
     return new Promise(async (resolve, reject) => {
+        if (!(await  isCharacterExist(name))) {
+            reject('Такого персонажа не существует')
+        }
+
         try {
             const character = await Character.getByName(name)
             const stats = {charm, dexterity, intelligence, physique, strength, wisdom}
@@ -84,6 +113,10 @@ async function setStats(name, charm, dexterity, intelligence, physique, strength
 
 async function setBase(name, characteristic, value) {
     return new Promise(async (resolve, reject) => {
+        if (!(await  isCharacterExist(name))) {
+            reject('Такого персонажа не существует')
+        }
+
         const character = await Character.getByName(name)
 
         try {
@@ -100,6 +133,10 @@ async function setBase(name, characteristic, value) {
 
 async function deleteCharacter(name) {
     return new Promise(async (resolve, reject) => {
+        if (!(await  isCharacterExist(name))) {
+            reject('Такого персонажа и так не существует')
+        }
+
         await Character.delete(name)
             .then(() => resolve())
             .catch(err => reject(err))

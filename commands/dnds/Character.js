@@ -1,4 +1,3 @@
-const fs = require('fs')
 const axios = require('axios')
 require('dotenv').config()
 const dburl = process.env.DND_DATABASE
@@ -30,14 +29,14 @@ class Character {
         await axios.put(url, character)
     }
 
-    static async getAll(addPath = '') {
+    static async getAll(addPath = '/characters') {
         const response = await axios.get(`${dburl}/dnd${addPath}.json`)
 
         return response.data
     }
 
     static async getByName(name) {
-        const data = await Character.getAll('/characters')
+        const data = await Character.getAll()
         const character = Object.values(data).find(char => char.name === name)
 
         return character
@@ -60,6 +59,15 @@ class Character {
         const id = await this.keyByName(name)
 
         await axios.delete(`${dburl}/dnd/characters/${id}.json`)
+    }
+
+    static async charactersNames() { // Возвращает массив имён всех персонажей
+        const names = []
+        const characters = (await axios.get(`${dburl}/dnd/characters.json`)).data
+
+        Object.values(characters).forEach(char => names.push(char.name))
+
+        return names
     }
 }
 

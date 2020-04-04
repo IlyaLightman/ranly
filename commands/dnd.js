@@ -3,7 +3,7 @@ const fs = require('fs')
 const { create, addMagic, addSkill, setStat, setStats, setBase, deleteCharacter } = require('./dnds/char')
 
 const validActions = ['char', 'inv', 'coin']
-const validCommands = ['add', 'list', 'create', 'magic', 'stat', 'stats', 'skill', 'base', 'delete']
+const validCommands = ['add', 'list', 'create', 'magic', 'stat', 'stats', 'skill', 'base', 'delete', 'names']
 
 const errorMessage = 'Произошла ошибка, проверьте правильность введённых данных'
 
@@ -28,38 +28,40 @@ module.exports = {
                     if (command === 'create') {
                         await create(...charArgs) // &dnd char create Devitt 40 60 6 3 3 20 3 14 3 yes Human
                             .then(() => message.channel.send('Новый персонаж создан'))
-                            .catch(() => message.channel.send(
-                                errorMessage))
+                            .catch(err => message.channel.send(
+                                err))
                     } else if (command === 'magic') {
                         await addMagic(...charArgs) // name (персонажа), title, mp, school, level, about
                             .then(() => message.channel.send(`Новый спелл добалвен персонажу ${charArgs[0]}`))
-                            .catch(() => message.channel.send(
-                                errorMessage))
+                            .catch(err => message.channel.send(
+                                err))
                     } else if (command === 'skill') {
                         await addSkill(...charArgs) // name, title, about
                             .then(() => message.channel.send(`Новый скилл добалвен персонажу ${charArgs[0]}`))
-                            .catch(() => message.channel.send(
-                                errorMessage))
+                            .catch(err => message.channel.send(
+                                err))
                     } else if (command === 'stat') {
                         await setStat(...charArgs) // name, stat, value
                             .then(() => message.channel.send(`Обновлена характеристика персонажа ${charArgs[0]}`))
-                            .catch(() => message.channel.send(
-                                errorMessage))
+                            .catch(err => message.channel.send(
+                                err))
                     } else if (command === 'stats') {
                         await setStats(...charArgs) // name, шесть характеристик цифрами
                             .then(() => message.channel.send(`Обновлены характеристики персонажа ${charArgs[0]}`))
-                            .catch(() => message.channel.send(
-                                errorMessage))
+                            .catch(err => message.channel.send(
+                                err))
                     } else if (command === 'base') {
                         await setBase(...charArgs)
                             .then(() => message.channel.send(`Обновлён персонаж ${charArgs[0]}`))
-                            .catch(() => message.channel.send(
-                                errorMessage))
+                            .catch(err => message.channel.send(
+                                err))
                     } else if (command === 'delete') {
                         await deleteCharacter(charArgs[0])
                             .then(() => message.channel.send(`Персонаж ${charArgs[0]} был удалён`))
-                            .catch(() => message.channel.send(
-                                errorMessage))
+                            .catch(err => message.channel.send(
+                                err))
+                    } else if (command === 'names') {
+                        await Character.charactersNames()
                     }
                 break
             case 'inv':
