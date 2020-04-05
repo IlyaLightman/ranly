@@ -47,6 +47,15 @@ class Inventory {
 
         return invKey
     }
+
+    static async inventoriesTitles() { // Возвращает массив имён всех персонажей
+        const titles = []
+        const inventories = (await axios.get(`${dburl}/dnd/inventories.json`)).data
+
+        Object.values(inventories).forEach(inv => titles.push(inv.title))
+
+        return titles
+    }
 }
 
 module.exports = Inventory

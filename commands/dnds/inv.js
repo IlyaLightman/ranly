@@ -1,16 +1,20 @@
 const Inventory = require('./Inventory')
 // Функции для комманды inv (Инвентарь)
 
-// async function isInventoryExist(title) {
-//     const titles = await Inventory.inventoriesTitles()
-//     if (titles.includes(title)) {
-//         return true
-//     } else return false
-// }
+async function isInventoryExist(title) {
+    const titles = await Inventory.inventoriesTitles()
+    if (titles.includes(title)) {
+        return true
+    } else return false
+}
 
 // $dnd inv create Potions
 async function create(title) {
     return new Promise(async (resolve, reject) => {
+        if (await isInventoryExist(title)) {
+            reject('Такой инвентарь уже существует')
+        }
+
         const inventory = new Inventory(title, [''], 0)
 
         await inventory.save()
@@ -21,6 +25,11 @@ async function create(title) {
 
 async function addItem(inv, title, about) { //$dnd inv add <inv name> <item title> <item description>
     return new Promise(async (resolve, reject) => {
+        const isInventory = await isInventoryExist(title)
+        if (isInventory) {
+            reject('Такого инвентаря не существует')
+        }
+
         const item = { title, about }
 
         const inventory = await Inventory.getByTitle(inv)
