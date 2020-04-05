@@ -1,6 +1,8 @@
 const Character = require('./dnds/Character')
 const fs = require('fs')
-const { create, addMagic, addSkill, setStat, setStats, setBase, deleteCharacter } = require('./dnds/char')
+// const { create, addMagic, addSkill, setStat, setStats, setBase, deleteCharacter } = require('./dnds/char')
+const char = require('./dnds/char')
+const inv = require('./dnds/inv')
 
 const validActions = ['char', 'inv', 'coin']
 const validCommands = ['add', 'list', 'create', 'magic', 'stat', 'stats', 'skill', 'base', 'delete', 'names']
@@ -26,37 +28,37 @@ module.exports = {
         switch (action) {
             case 'char':
                     if (command === 'create') {
-                        await create(...charArgs) // &dnd char create Devitt 40 60 6 3 3 20 3 14 3 yes Human
+                        await char.create(...charArgs) // &dnd char create Devitt 40 60 6 3 3 20 3 14 3 yes Human
                             .then(() => message.channel.send('Новый персонаж создан'))
                             .catch(err => message.channel.send(
                                 err))
                     } else if (command === 'magic') {
-                        await addMagic(...charArgs) // name (персонажа), title, mp, school, level, about
+                        await char.addMagic(...charArgs) // name (персонажа), title, mp, school, level, about
                             .then(() => message.channel.send(`Новый спелл добалвен персонажу ${charArgs[0]}`))
                             .catch(err => message.channel.send(
                                 err))
                     } else if (command === 'skill') {
-                        await addSkill(...charArgs) // name, title, about
+                        await char.addSkill(...charArgs) // name, title, about
                             .then(() => message.channel.send(`Новый скилл добалвен персонажу ${charArgs[0]}`))
                             .catch(err => message.channel.send(
                                 err))
                     } else if (command === 'stat') {
-                        await setStat(...charArgs) // name, stat, value
+                        await char.setStat(...charArgs) // name, stat, value
                             .then(() => message.channel.send(`Обновлена характеристика персонажа ${charArgs[0]}`))
                             .catch(err => message.channel.send(
                                 err))
                     } else if (command === 'stats') {
-                        await setStats(...charArgs) // name, шесть характеристик цифрами
+                        await char.setStats(...charArgs) // name, шесть характеристик цифрами
                             .then(() => message.channel.send(`Обновлены характеристики персонажа ${charArgs[0]}`))
                             .catch(err => message.channel.send(
                                 err))
                     } else if (command === 'base') {
-                        await setBase(...charArgs)
+                        await char.setBase(...charArgs)
                             .then(() => message.channel.send(`Обновлён персонаж ${charArgs[0]}`))
                             .catch(err => message.channel.send(
                                 err))
                     } else if (command === 'delete') {
-                        await deleteCharacter(charArgs[0])
+                        await char.deleteCharacter(charArgs[0])
                             .then(() => message.channel.send(`Персонаж ${charArgs[0]} был удалён`))
                             .catch(err => message.channel.send(
                                 err))
@@ -65,7 +67,15 @@ module.exports = {
                     }
                 break
             case 'inv':
-
+                    if (command === 'create') {
+                        await inv.create(...charArgs)
+                            .then(() => message.channel.send(`Иневентарь ${charArgs[0]} создан`))
+                            .catch(err => message.channel.send(err))
+                    } else if (command === 'add') {
+                        await inv.addItem(...charArgs)
+                            .then(() => message.channel.send(
+                                `Предмет ${charArgs[1]} добавлен в инвентарь ${charArgs[0]}`))
+                    }
                 break
         }
 

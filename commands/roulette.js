@@ -2,6 +2,7 @@ module.exports = {
     name: 'roulette',
     description: 'Рулетка. Проигрыш - бан',
     aliases: ['chance'],
+    guildOnly: true,
     usage: '[шанс бана (от 0 до 100)]',
     examples: ['10', '70%'],
     cooldown: 60,

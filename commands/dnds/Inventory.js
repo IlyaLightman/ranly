@@ -15,6 +15,13 @@ class Inventory {
         await axios.post(`${dburl}/dnd/inventories.json`, inventory).catch(console.log)
     }
 
+    static async inventoryUpdate(title, inventory) {
+        const id = await Inventory.keyByTitle(title)
+        const url = `${dburl}/dnd/inventories/${id}.json`
+
+        await axios.put(url, inventory)
+    }
+
     static async getAll(addPath = '/inventories') {
         const response = await axios.get(`${dburl}/dnd${addPath}.json`)
 

@@ -1,5 +1,6 @@
 const fs = require('fs')
 const Discord = require('discord.js')
+const { bgBlueBright, blue, magenta } = require('chalk')
 
 const { prefix, hearts, groovy, groovyChannel } = require('./config')
 require('dotenv').config()
@@ -19,12 +20,12 @@ commandFiles.forEach(file => {
 
 let commands = ''
 client.commands.forEach(command => commands += `${command.name} `)
-console.log(commands)
+console.log(bgBlueBright.bold(commands))
 
 const cooldowns = new Discord.Collection()
 
 client.once('ready', () => {
-    console.log('Ranly готов к работе!')
+    console.log(magenta('Ranly готов к работе!'))
 })
 
 client.on('shardError', error => {
@@ -105,8 +106,8 @@ client.on('message', message => {
         command.execute(message, args)
     } catch (err) {
         console.error(err)
-        message.reply(`Произошла ошибка`)
+        message.reply(`Произошла ошибка`).then(console.log)
     }
 })
 
-client.login(token).then(() => console.log('Ranly залогинился!'))
+client.login(token).then(() => console.log(blue('Ranly залогинился!')))
