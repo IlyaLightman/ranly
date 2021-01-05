@@ -15,7 +15,7 @@
   "author": "Ilya Zaytsev <ilya@zaytsev.xyz>",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "discord.js": "^12.0.2",
     "dotenv": "^8.2.0"
   },
